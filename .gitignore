@@ -1,23 +1,18 @@
-    #this is the one i am struggling with the output and saving it as a file 
-
+#this is the one with the right output
 import requests
-import json
-import pprint
+from pprint import pprint
 
-pokemon_ids = [12, 30, 22, 4, 6, 8]
+pokemon_number = input("What is the Pokemon ID?")
 
+url = 'https://pokeapi.co/api/v2/pokemon/{}/'.format(pokemon_number)
 
-def pokemonInfo():
-    for pokemon in pokemon_ids:
-        url = 'https://pokeapi.co/api/v2/pokemon/{}/'.format(pokemon)
-        response = requests.get(url)
-        pokemon = response.json()
-        n= pprint.pprint("Name: " + (pokemon["name"]))
-        m= pprint.pprint(pokemon["moves"])
+response = requests.get(url)
 
-    return(n,m)
+pokemon = response.json()
+print("Name:" + str(pokemon["name"]))
+print("Height:" + str(pokemon["height"]))
+print("Weight:" + str(pokemon["weight"]))
 
-with open("pokemon.txt", "w+") as text_file:
-    pokemons = pokemonInfo()
-    text_file.write(pokemons)
-    
+moves = pokemon["moves"]
+for move in moves:
+    print(move["move"]["name"])
